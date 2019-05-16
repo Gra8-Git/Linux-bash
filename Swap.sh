@@ -6,7 +6,9 @@ if sudo swapon --show | grep -q '/dev/'; then
 else
   echo "create swap file=========================================================================\n"
   cd /
-  sudo fallocate -l 1G /swapfile
+  read -p "Enter memmory range: 1G 2G or 8G .... "  rangem
+  echo $rangem
+  sudo fallocate -l $rangem /swapfile
   sudo chmod 600 /swapfile
   echo "set up swap area to file=================================================================\n"
   sudo mkswap /swapfile
