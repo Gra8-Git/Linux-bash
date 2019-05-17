@@ -23,3 +23,5 @@ else
   echo "/etc/sysctl.conf To change how often the system will use the swap space you need to add \n"
   echo "this line to file /etc/sysctl.conf --->         vm.swappiness=10"
   echo "deactivate swap : sudo swapoff -v /swapfile    and remove swap file: sudo rm /swapfile"
+fi
+exit 0
