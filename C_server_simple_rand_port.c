@@ -2,28 +2,33 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <signal.h>
 //#define INADDR_LOOPBACK     0x7f000001
 //#define INADDR_ANY      0x00000000
-
+void read_socket(int newsock, int pid);
 void main(){
         int sock = socket(AF_INET, SOCK_STREAM, 0);
         struct sockaddr_in sock_addr;
         int pid;
+        int newsock;
         sock_addr.sin_family = AF_INET;
         sock_addr.sin_port = htons(0);
         sock_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-
         bind(sock,(struct sockaddr *)&sock_addr , sizeof(sock_addr));
-        listen(sock,3);
+        listen(sock,5);
         int scli=sizeof(sock_addr);
-
-int newsock = accept(sock, (struct sockaddr *) &sock_addr, &scli);
-while(1){
-if(newsock > 0){
-pid=fork();
+while(newsock = accept(sock, (struct sockaddr *) &sock_addr, &scli)){
+   int pid;
+    if((pid = fork()) == 0) {
+read_socket(newsock,pid);
+}
+}
+}
+void read_socket(int newsock, int pid)
+{
 char buffer[256];
-read(newsock,buffer,255);
+while(read(newsock,buffer,255)>0){
 printf(buffer);
 }
+}
 
-}}
